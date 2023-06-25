@@ -272,27 +272,31 @@ def _convert_dataset(coco_root: str, dataset_split: str,
       start_idx = shard_id * num_per_shard
       end_idx = min((shard_id + 1) * num_per_shard, num_images)
       for i in range(start_idx, end_idx):
-        # Read the image.
-        with tf.io.gfile.GFile(image_files[i], 'rb') as f:
-          image_data = f.read()
+        try:
+          # Read the image.
+          with tf.io.gfile.GFile(image_files[i], 'rb') as f:
+            image_data = f.read()
 
-        if dataset_split == 'test':
-          label_data, label_format = None, None
-        else:
-          label_data, label_format = _create_panoptic_label(
+          if dataset_split == 'test':
+            label_data, label_format = None, None
+          else:
+            label_data, label_format = _create_panoptic_label(
               coco_root, dataset_split, image_files[i], segments_dict)
 
-        # Convert to tf example.
-        image_path = os.path.normpath(image_files[i])
-        path_list = image_path.split(os.sep)
-        file_name = path_list[-1]
-        file_prefix = os.path.splitext(file_name)[0]
-        example = data_utils.create_tfexample(image_data,
+          # Convert to tf example.
+          image_path = os.path.normpath(image_files[i])
+          path_list = image_path.split(os.sep)
+          file_name = path_list[-1]
+          file_prefix = os.path.splitext(file_name)[0]
+          example = data_utils.create_tfexample(image_data,
                                               'jpeg',
                                               file_prefix, label_data,
                                               label_format)
 
-        tfrecord_writer.write(example.SerializeToString())
+          tfrecord_writer.write(example.SerializeToString())
+        except Exception as e:
+          print(e)
+          continue
 
 
 def main(unused_argv: Sequence[str]) -> None:
