@@ -60,15 +60,15 @@ _CLASS_MAPPING = coco_constants.get_id_mapping()
 # A map from data type to folder name that saves the data.
 _FOLDERS_MAP = {
     'train': {
-        'image': 'train2017',
+        'image': 'train',
         'label': 'annotations',
     },
     'val': {
-        'image': 'val2017',
+        'image': 'val',
         'label': 'annotations',
     },
     'test': {
-        'image': 'test2017',
+        'image': 'test',
         'label': '',
     }
 }
@@ -100,7 +100,7 @@ def _get_images(coco_root: str, dataset_split: str) -> Sequence[str]:
 
 def _get_panoptic_annotation(coco_root: str, dataset_split: str,
                              annotation_file_name: str) -> str:
-  panoptic_folder = 'panoptic_%s2017' % dataset_split
+  panoptic_folder = 'panoptic_%s' % dataset_split
   return os.path.join(coco_root, _FOLDERS_MAP[dataset_split]['label'],
                       panoptic_folder, annotation_file_name)
 
@@ -122,7 +122,7 @@ def _read_segments(coco_root: str, dataset_split: str):
   """
   json_filename = os.path.join(
       coco_root, _FOLDERS_MAP[dataset_split]['label'],
-      'panoptic_%s2017.json' % dataset_split)
+      'panoptic_%s.json' % dataset_split)
   with tf.io.gfile.GFile(json_filename) as f:
     panoptic_dataset = json.load(f)
 
@@ -237,8 +237,7 @@ def _create_panoptic_label(coco_root: str, dataset_split: str, image_path: str,
   path_list = image_path.split(os.sep)
   file_name = path_list[-1]
 
-  annotation_file_name, segments = segments_dict[
-      os.path.splitext(file_name)[-2]]
+  annotation_file_name, segments = segments_dict[os.path.splitext(file_name)[-2]+'_label_ground-truth_coco-panoptic']
   panoptic_annotation_file = _get_panoptic_annotation(coco_root,
                                                       dataset_split,
                                                       annotation_file_name)
