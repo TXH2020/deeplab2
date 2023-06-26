@@ -94,14 +94,14 @@ train_dataset_options {
   file_pattern: "surface_dataset_tf/train*.tfrecord"
   # Adjust the batch_size accordingly to better fit your GPU/TPU memory.
   # Also see Q1 in g3doc/faq.md.
-  batch_size: 4
-  crop_size: 320
-  crop_size: 320
-  min_resize_value: 320
-  max_resize_value: 320
+  batch_size: 64
+  crop_size: 1281
+  crop_size: 1281
+  min_resize_value: 1281
+  max_resize_value: 1281
   augmentations {
-    min_scale_factor: 0.5
-    max_scale_factor: 1.5
+    min_scale_factor: 0.3
+    max_scale_factor: 1.7
     scale_factor_step_size: 0.1
     autoaugment_policy_name: "simple_classification_policy"
     panoptic_copy_paste {
@@ -112,7 +112,7 @@ train_dataset_options {
     }
   }
   increase_small_instance_weights: false
-  small_instance_weight: 3.0
+  small_instance_weight: 1.0
   thing_id_mask_annotations: true
 }
 eval_dataset_options {
@@ -145,4 +145,3 @@ evaluator_options {
   save_predictions: true
   save_raw_predictions: false
 }
-
