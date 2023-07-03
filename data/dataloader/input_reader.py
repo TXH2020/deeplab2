@@ -81,8 +81,8 @@ class InputReader(object):
           num_parallel_calls=tf.data.experimental.AUTOTUNE,
           deterministic=not self._is_training)
 
-      if self._is_training:
-        dataset = dataset.shuffle(_SHUFFLE_BUFFER_SIZE)
+      #if self._is_training:
+        #dataset = dataset.shuffle(_SHUFFLE_BUFFER_SIZE)
       if max_num_examples > 0:
         dataset = dataset.take(max_num_examples)
 
