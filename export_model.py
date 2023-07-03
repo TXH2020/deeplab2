@@ -150,7 +150,7 @@ def main(argv: Sequence[str]) -> None:
 
   signatures = module.__call__.get_concrete_function(module.get_input_spec())
   tf.saved_model.save(
-      module, _FLAGS_OUTPUT_PATH.value, signatures=signatures)
+      module, _FLAGS_OUTPUT_PATH.value, signatures=signatures,options=tf.saved_model.SaveOptions(experimental_custom_gradients=True))
 
 
 if __name__ == '__main__':
