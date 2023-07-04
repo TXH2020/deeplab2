@@ -295,7 +295,7 @@ SEMKITTI_DVPS_INFORMATION = _build_dataset_info(
 
 COCO_PANOPTIC_INFORMATION = _build_dataset_info(
     dataset_name=_COCO_PANOPTIC,
-    splits_to_sizes={'train': 118,
+    splits_to_sizes={'train': 117,
                      'val': 5,
                      'test': 30},
     num_classes=2,
