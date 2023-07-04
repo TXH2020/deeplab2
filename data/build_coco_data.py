@@ -91,10 +91,19 @@ def _get_images(coco_root: str, dataset_split: str) -> Sequence[str]:
   Returns:
     A list of sorted file names.
   """
-  pattern = '*.%s' % _DATA_FORMAT_MAP['image']
-  search_files = os.path.join(
+  filenames=[]
+  if(dataset_split=='train'):
+    for i in ['jpg','jpeg','png']:
+      pattern = '*.%s' % i
+      search_files = os.path.join(
       coco_root, _FOLDERS_MAP[dataset_split]['image'], pattern)
-  filenames = tf.io.gfile.glob(search_files)
+      filenames1 = tf.io.gfile.glob(search_files)
+      filenames.extend(filenames1)
+  else:
+    pattern = '*.%s' % _DATA_FORMAT_MAP['image']
+    search_files = os.path.join(
+      coco_root, _FOLDERS_MAP[dataset_split]['image'], pattern)
+    filenames = tf.io.gfile.glob(search_files)
   return sorted(filenames)
 
 
@@ -258,7 +267,6 @@ def _convert_dataset(coco_root: str, dataset_split: str,
   image_files = _get_images(coco_root, dataset_split)
 
   num_images = len(image_files)
-
   if dataset_split != 'test':
     segments_dict = _read_segments(coco_root, dataset_split)
 
