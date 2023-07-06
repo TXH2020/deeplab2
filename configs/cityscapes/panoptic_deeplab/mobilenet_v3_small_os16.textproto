@@ -32,7 +32,7 @@ model_options {
   backbone {
     name: "mobilenet_v3_small"
     use_squeeze_and_excite: true
-    output_stride: 8
+    output_stride: 16
   }
   decoder {
     feature_key: "res5"
@@ -113,9 +113,9 @@ train_dataset_options {
   file_pattern: "surface_dataset_tf/train*.tfrecord"
   # Adjust the batch_size accordingly to better fit your GPU/TPU memory.
   # Also see Q1 in g3doc/faq.md.
-  batch_size: 4
-  crop_size: 257
-  crop_size: 257
+  batch_size: 1
+  crop_size: 129
+  crop_size: 129
   # Skip resizing.
   min_resize_value: 0
   max_resize_value: 0
@@ -131,7 +131,7 @@ train_dataset_options {
 eval_dataset_options {
   dataset: "cityscapes_panoptic"
   # Update the path to validation set.
-  file_pattern: "${VAL_SET}"
+  file_pattern: "surface_dataset_tf/val*.tfrecord"
   batch_size: 1
   crop_size: 513
   crop_size: 513
